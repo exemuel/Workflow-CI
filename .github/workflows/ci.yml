@@ -54,7 +54,7 @@ jobs:
         git commit -q -m "Initial commit" || true
         
         # Run MLflow with verbose logging
-        mlflow run . -v 2>&1 | tee /tmp/mlflow_output.txt
+        mlflow run . -v 1 2>&1 | tee /tmp/mlflow_output.txt
         EXIT_CODE=${PIPESTATUS[0]}
         
         if [ $EXIT_CODE -ne 0 ]; then
