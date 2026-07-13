@@ -82,6 +82,7 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Build and Push Docker Image
+      shell: bash -l {0}
       run: |
         cd MLProject
         mlflow models build-docker -m "runs/${{ env.RUN_ID }}/model" -n exemuel/titanic-model:latest
