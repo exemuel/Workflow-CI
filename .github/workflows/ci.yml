@@ -44,11 +44,19 @@ jobs:
       shell: bash -l {0}
       run: |
         export MLFLOW_TRACKING_URI=file:./mlruns
-        cd MLProject
+        cd MLProject || { echo "MLProject directory not found"; exit 1; }
         mlflow run . > /tmp/mlflow_output.txt 2>&1
+        EXIT_CODE=$?
         cat /tmp/mlflow_output.txt
-        # Extract the run ID from the output
+        if [ $EXIT_CODE -ne 0 ]; then
+          echo "MLflow run failed with exit code $EXIT_CODE"
+          exit $EXIT_CODE
+        fi
         RUN_ID=$(grep -oP '(?<=Run ID: )\S+' /tmp/mlflow_output.txt | head -1)
+        if [ -z "$RUN_ID" ]; then
+          echo "ERROR: Could not extract RUN_ID from MLflow output"
+          exit 1
+        fi
         echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
         echo "Captured Run ID: $RUN_ID"
 
