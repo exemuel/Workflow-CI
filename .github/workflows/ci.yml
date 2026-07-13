@@ -54,7 +54,7 @@ jobs:
         git commit -q -m "Initial commit" || true
         
         # Run MLflow
-        mlflow run . --no-conda 2>&1 | tee /tmp/mlflow_output.txt
+        mlflow run . --env-manager local 2>&1 | tee /tmp/mlflow_output.txt
         EXIT_CODE=${PIPESTATUS[0]}
         
         if [ $EXIT_CODE -ne 0 ]; then
