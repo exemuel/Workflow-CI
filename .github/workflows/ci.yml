@@ -86,5 +86,5 @@ jobs:
       run: |
         cd MLProject
         export MLFLOW_TRACKING_URI=file:./mlruns
-        mlflow models build-docker -m "runs:/${{ env.RUN_ID }}/model" -n exemuel/titanic-model:latest
+        mlflow models build-docker -m "runs:/${{ env.RUN_ID }}/model" -n exemuel/titanic-model:latest --env-manager local
         docker push exemuel/titanic-model:latest
