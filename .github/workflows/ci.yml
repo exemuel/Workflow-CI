@@ -47,7 +47,7 @@ jobs:
         cd MLProject || { echo "MLProject directory not found"; exit 1; }
         
         # Add verbose logging and capture both stdout/stderr separately for better debugging
-        mlflow run . -v 2>&1 | tee /tmp/mlflow_output.txt
+        mlflow run . -v 2 2>&1 | tee /tmp/mlflow_output.txt
         EXIT_CODE=${PIPESTATUS[0]}
         
         if [ $EXIT_CODE -ne 0 ]; then
