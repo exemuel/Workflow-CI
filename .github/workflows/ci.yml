@@ -44,7 +44,9 @@ jobs:
       shell: bash -l {0}
       run: |
         export MLFLOW_TRACKING_URI=http://127.0.0.1:5000
+        python -c "import mlflow; mlflow.end_run()"  # Clear any active runs
         cd MLProject
+        export MLFLOW_TRACKING_URI=file:./mlruns
         mlflow run .
 
     - name: Log in to Docker Hub
