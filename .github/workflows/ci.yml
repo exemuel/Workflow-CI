@@ -36,8 +36,8 @@ jobs:
     - name: Start MLflow tracking server
       shell: bash -l {0}
       run: |
-        mlflow server --host 127.0.0.1 --port 5000 > /tmp/mlflow.log 2>&1 &
-        sleep 2
+        mlflow server --host 127.0.0.1 --port 5000 &
+        sleep 3  # Give the server time to start
         echo "MLflow server started"
 
     - name: Run MLflow Project
