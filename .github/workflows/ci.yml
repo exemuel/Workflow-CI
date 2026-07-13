@@ -45,13 +45,18 @@ jobs:
       run: |
         export MLFLOW_TRACKING_URI=file:./mlruns
         cd MLProject || { echo "MLProject directory not found"; exit 1; }
-        mlflow run . > /tmp/mlflow_output.txt 2>&1
-        EXIT_CODE=$?
-        cat /tmp/mlflow_output.txt
+        
+        # Add verbose logging and capture both stdout/stderr separately for better debugging
+        mlflow run . -v 2>&1 | tee /tmp/mlflow_output.txt
+        EXIT_CODE=${PIPESTATUS[0]}
+        
         if [ $EXIT_CODE -ne 0 ]; then
-          echo "MLflow run failed with exit code $EXIT_CODE"
+          echo "==== MLflow run failed with exit code $EXIT_CODE ===="
+          echo "Full output:"
+          cat /tmp/mlflow_output.txt
           exit $EXIT_CODE
         fi
+        
         RUN_ID=$(grep -oP '(?<=Run ID: )\S+' /tmp/mlflow_output.txt | head -1)
         if [ -z "$RUN_ID" ]; then
           echo "ERROR: Could not extract RUN_ID from MLflow output"
