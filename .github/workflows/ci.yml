@@ -33,9 +33,17 @@ jobs:
         python -m pip install --upgrade pip
         pip install mlflow==2.19.0
 
+    - name: Start MLflow tracking server
+      shell: bash -l {0}
+      run: |
+        mlflow server --host 127.0.0.1 --port 5000 > /tmp/mlflow.log 2>&1 &
+        sleep 2
+        echo "MLflow server started"
+
     - name: Run MLflow Project
       shell: bash -l {0}
       run: |
+        export MLFLOW_TRACKING_URI=http://127.0.0.1:5000
         cd MLProject
         mlflow run .
 
