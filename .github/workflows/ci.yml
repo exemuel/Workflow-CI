@@ -64,7 +64,10 @@ jobs:
           exit $EXIT_CODE
         fi
         
-        RUN_ID=$(grep -oP '(?<=Run ID: )\S+' /tmp/mlflow_output.txt | head -1)
+        RUN_ID=$(grep -oP "(?<=in run with ID ')[a-f0-9]+" /tmp/mlflow_output.txt | head -1)
+        if [ -z "$RUN_ID" ]; then
+          RUN_ID=$(grep -oP "(?<=Run \(ID ')[a-f0-9]+" /tmp/mlflow_output.txt | head -1)
+        fi
         if [ -z "$RUN_ID" ]; then
           echo "ERROR: Could not extract RUN_ID from MLflow output"
           exit 1
